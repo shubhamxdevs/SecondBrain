@@ -1,3 +1,8 @@
+// 1. Sabse upar Node DNS ko import karke bypass servers set karein
+import dns from "node:dns";
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
+
+// 2. Ab aapke baaki ke imports
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
@@ -12,7 +17,6 @@ import shareContentRouter from "./routes/shareContent.js";
 import contentLinkRouter from "./routes/contentLink.js";
 
 const PORT = process.env.PORT || 3000;
-
 const app = express();
 
 // ✅ cors first, before everything
@@ -25,7 +29,7 @@ app.use(express.json());
 
 connectDB();
 
-app.get("/health", (req, res) => res.json({ status: "ok" }));//For Crone-Job (10 minutely) to keep the free-tier Render Server Awake.
+app.get("/health", (req, res) => res.json({ status: "ok" }));
 app.use("/api/v1", userSignupRouter);
 app.use("/api/v1", userSigninRouter);
 app.use("/api/v1/content", userMiddleware, postContentRouter);
